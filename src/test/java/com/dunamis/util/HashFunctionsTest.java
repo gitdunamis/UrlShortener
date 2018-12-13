@@ -13,11 +13,8 @@ public class HashFunctionsTest {
         var expected = hashFunc(num);
 
         String value = HashFunctions.encodeBase62(num);
-        int numHash = HashFunctions.decodeBase62(value);
-        System.out.println("hash of 6526670: "+ value);
-        System.out.println("decoding back: "+numHash);
+
         assertThat(expected, is(value));
-        assertThat(num, is(numHash));
     }
 
     @Test
@@ -56,6 +53,7 @@ public class HashFunctionsTest {
         for (char c: hashArr.toCharArray()) {
             var cIndex = base62.indexOf(c);
             baseTenNumber += cIndex * Math.pow(base,  digit);
+            digit += 1;
         }
 
         return baseTenNumber;
