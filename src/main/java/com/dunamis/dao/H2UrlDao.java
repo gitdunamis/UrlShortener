@@ -4,6 +4,7 @@ import com.dunamis.domain.Url;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowCountCallbackHandler;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
@@ -11,10 +12,13 @@ import java.sql.SQLException;
 
 
 @Repository
-public class UrlDao implements IUrlDao {
+public class H2UrlDao implements IUrlDao {
 
     @Autowired
     JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     @Override
     public void createUrl(Url url) {
@@ -24,9 +28,16 @@ public class UrlDao implements IUrlDao {
 
     @Override
     public Url getUrlByIndex(int index) {
-        var url = jdbcTemplate.queryForObject(
-                "SELECT urlId, longUrl, uniqueKey FROM Url WHERE urlId=?",
+        String sql = "SELECT urlId, longUrl, uniqueKey FROM Url WHERE urlId = ?";
+        var url = jdbcTemplate.queryForObject( //SELECT * FROM materials WHERE title = ?
+                sql,
                 this::mapRowToUrl, index);
+
+
+//
+//        SqlParameterSource source = new MapSqlParameterSource().addValue("urlId", 1);
+//
+//        var url2 = namedParameterJdbcTemplate.queryForObject(sql, source, Url.class);
 
         return url;
     }
