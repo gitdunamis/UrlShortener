@@ -3,9 +3,15 @@ package com.dunamis.api.model;
 
 import lombok.Builder;
 import lombok.Data;
+import org.springframework.beans.factory.annotation.Value;
+
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
+/**
+ * A class representing the JSON formatting of a request to create a short url
+ */
 @Data
 public class CreateRequest {
     /**
@@ -31,5 +37,6 @@ public class CreateRequest {
      * link will no longer be valid after  `maxNumHits`.
      * -1 for infinity
      */
+    @Min(value = -1)
     private int maxNumHits;
 }
